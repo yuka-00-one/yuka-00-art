@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+     ▼ ① 基本情報（ここを自分用に書き換え）
+     ============================================================ -->
+<title>YUKA｜解説マンガ・図解イラストレーター ポートフォリオ</title>
+<meta name="description" content="むずかしいことを、マンガ・図解・キャラクターでわかりやすく。解説マンガ、図解、キャラクター、大型看板まで手がけるイラストレーターのポートフォリオ。">
+<!-- 検索エンジンにインデックスさせない（Google等の検索結果に出さない設定） -->
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 落ち着いた定番フォント（Noto Sans JP / Inter）。丸ゴシックは使わない -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   ▼ ② テーマ設定（色を変えたいときはここだけ）
+   accent を変えると、サイト全体のアクセント色が変わります
+   ============================================================ */
+:root{
+  --bg:      #faf8f4;   /* 背景：あたたかいオフホワイト */
+  --bg-soft: #f3eee6;   /* 薄いトーン背景 */
+  --ink:     #1d1b18;   /* 本文：ほぼ黒 */
+  --ink-2:   #6b655c;   /* 補足テキスト：グレー */
+  --line:    #e4ddd1;   /* 罫線 */
+  --accent:  #e2632e;   /* アクセント1色（親しみのある暖色オレンジ）※明るさを少し残す */
+  --accent-soft:#fbe3d6;
+  --white:   #ffffff;
+  --maxw:    1140px;
+  --radius:  14px;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{
+  font-family:"Noto Sans JP", system-ui, sans-serif;
+  color:var(--ink); background:var(--bg);
+  line-height:1.85; -webkit-font-smoothing:antialiased;
+}
+img{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+.en{ font-family:"Inter",sans-serif; }
+.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+section{ padding:104px 0; }
+
+/* 作品画像は白背景に「contain」で全体を見せる（マンガ・図解の文字が切れないように） */
+.frame img{ width:100%; height:100%; object-fit:contain; background:var(--white); }
+
+/* 小見出しラベル */
+.eyebrow{
+  font-family:"Inter",sans-serif; font-weight:600; font-size:.78rem;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--accent);
+  display:flex; align-items:center; gap:10px; margin-bottom:14px;
+}
+.eyebrow::before{ content:""; width:26px; height:2px; background:var(--accent); display:inline-block; }
+.sec-head{ margin-bottom:52px; }
+.sec-head h2{ font-size:clamp(1.7rem,3.6vw,2.5rem); font-weight:900; letter-spacing:.01em; }
+.sec-head p{ color:var(--ink-2); margin-top:12px; max-width:640px; }
+
+/* ============================================================
+   ナビ
+   ============================================================ */
+header{
+  position:sticky; top:0; z-index:50;
+  background:rgba(250,248,244,.82); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.nav{
+  max-width:var(--maxw); margin:0 auto; padding:16px 24px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{ font-weight:900; font-size:1.15rem; letter-spacing:.02em; }
+.brand small{ color:var(--ink-2); font-weight:500; font-size:.72rem; display:block; letter-spacing:.08em; margin-top:-2px; }
+.nav-links{ display:flex; align-items:center; gap:30px; }
+.nav-links a{ font-size:.92rem; font-weight:500; color:var(--ink-2); transition:.2s; }
+.nav-links a:hover{ color:var(--ink); }
+.nav-cta{
+  font-size:.88rem; font-weight:700; color:var(--white)!important; background:var(--ink);
+  padding:9px 18px; border-radius:999px; transition:.2s;
+}
+.nav-cta:hover{ background:var(--accent); }
+
+/* ============================================================
+   ヒーロー（背景に拡大画像のスライドショー ＋ 左に文字）
+   ▼ 職種を変えるときは role と h1 と lead を書き換えるだけ
+   ============================================================ */
+.hero{ position:relative; overflow:hidden; min-height:660px; display:flex; align-items:center; }
+/* 背景スライドショー（cover で全面に拡大） */
+.hero-bg{ position:absolute; inset:0; z-index:0; }
+.hero-bg img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; transition:opacity 1.3s ease; }
+.hero-bg img.is-active{ opacity:1; }
+/* 文字の視認性を守るスクリム：左は背景色で不透明→右へ透明 */
+.hero-scrim{ position:absolute; inset:0; z-index:1;
+  background:linear-gradient(90deg,
+    var(--bg) 0%, var(--bg) 30%,
+    rgba(250,248,244,.9) 44%, rgba(250,248,244,.55) 56%,
+    rgba(250,248,244,.15) 72%, rgba(250,248,244,0) 86%); }
+.hero-inner{ position:relative; z-index:2; width:100%; }
+.hero-copy{ max-width:560px; padding:80px 0; }
+/* 右下に現在の作品名 */
+.hero-tag{ position:absolute; z-index:2; right:26px; bottom:22px;
+  background:rgba(29,27,24,.72); color:#fff; font-size:.82rem; font-weight:600;
+  padding:6px 14px; border-radius:999px; letter-spacing:.03em; backdrop-filter:blur(4px); }
+
+.role{ font-family:"Inter",sans-serif; font-weight:600; letter-spacing:.04em; color:var(--accent); font-size:1rem; margin-bottom:18px; }
+.hero h1{ font-size:clamp(2.1rem,4.8vw,3.4rem); font-weight:900; line-height:1.28; letter-spacing:.01em; }
+.hero h1 .mark{ background:linear-gradient(transparent 62%, var(--accent-soft) 62%); padding:0 .08em; }
+.hero .lead{ color:var(--ink-2); font-size:1.06rem; margin:26px 0 34px; max-width:480px; }
+.hero-cta{ display:flex; gap:14px; flex-wrap:wrap; }
+.btn{ font-weight:700; font-size:.96rem; padding:14px 26px; border-radius:999px; transition:.2s; display:inline-block; border:1.5px solid var(--ink); }
+.btn-solid{ background:var(--ink); color:var(--white); }
+.btn-solid:hover{ background:var(--accent); border-color:var(--accent); transform:translateY(-2px); }
+.btn-line{ background:var(--white); color:var(--ink); }
+.btn-line:hover{ background:var(--ink); color:var(--white); transform:translateY(-2px); }
+
+/* 指標バー */
+.stats{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.stats .wrap{ display:grid; grid-template-columns:repeat(3,1fr); }
+.stat{ padding:30px 10px; text-align:center; border-left:1px solid var(--line); }
+.stat:first-child{ border-left:none; }
+.stat b{ font-family:"Inter",sans-serif; font-size:1.7rem; font-weight:700; display:block; }
+.stat small{ color:var(--ink-2); font-size:.82rem; }
+
+/* ============================================================
+   代表作（ケーススタディ）
+   ============================================================ */
+.case{ background:var(--bg-soft); }
+.case-grid{ display:grid; grid-template-columns:1fr 1fr; gap:54px; align-items:center; }
+.case-art .frame{ border-radius:var(--radius); overflow:hidden; aspect-ratio:3/4; box-shadow:0 20px 44px rgba(29,27,24,.14); background:var(--white); }
+.case h3{ font-size:1.55rem; font-weight:900; margin:6px 0 8px; }
+.case .meta{ color:var(--ink-2); font-size:.9rem; margin-bottom:22px; }
+.case dl{ display:grid; grid-template-columns:84px 1fr; gap:12px 18px; margin-top:18px; }
+.case dt{ font-weight:700; font-size:.9rem; color:var(--accent); }
+.case dd{ font-size:.96rem; }
+
+/* ============================================================
+   作品ギャラリー
+   ============================================================ */
+.filter{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:36px; }
+.filter button{
+  font-family:"Noto Sans JP",sans-serif; font-weight:700; font-size:.9rem;
+  padding:9px 20px; border-radius:999px; border:1.5px solid var(--line);
+  background:var(--white); color:var(--ink-2); cursor:pointer; transition:.2s;
+}
+.filter button:hover{ border-color:var(--ink); color:var(--ink); }
+.filter button.active{ background:var(--ink); border-color:var(--ink); color:var(--white); }
+
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:28px; }
+.work{ background:var(--white); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; transition:.25s; }
+.work:hover{ transform:translateY(-6px); box-shadow:0 22px 40px rgba(29,27,24,.12); }
+/* サムネ＝複数画像を重ねて自動スライドショー。クリックで拡大ポップアップ */
+.work .thumb{ display:block; width:100%; aspect-ratio:1/1; overflow:hidden; background:var(--white); position:relative; border:0; padding:0; cursor:zoom-in; font:inherit; }
+.work .thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:var(--white); opacity:0; transition:opacity .7s ease; }
+.work .thumb img.is-active{ opacity:1; }
+.work .cat{ position:absolute; top:12px; left:12px; z-index:2; background:rgba(255,255,255,.94); color:var(--ink); font-size:.74rem; font-weight:700; padding:4px 12px; border-radius:999px; letter-spacing:.04em; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+.work .count{ position:absolute; top:12px; right:12px; z-index:2; background:rgba(29,27,24,.78); color:#fff; font-family:"Inter",sans-serif; font-size:.74rem; font-weight:600; padding:3px 10px; border-radius:999px; letter-spacing:.03em; }
+.work .zoom{ position:absolute; bottom:12px; right:12px; z-index:2; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.94); box-shadow:0 2px 10px rgba(0,0,0,.12); display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(6px); transition:.2s; }
+.work .zoom svg{ width:18px; height:18px; }
+.work:hover .zoom{ opacity:1; transform:translateY(0); }
+.work .dots{ position:absolute; bottom:12px; left:12px; z-index:2; display:flex; gap:5px; }
+.work .dots i{ width:6px; height:6px; border-radius:50%; background:rgba(29,27,24,.25); transition:.3s; }
+.work .dots i.on{ background:var(--accent); width:16px; border-radius:3px; }
+.work .body{ padding:20px 22px 24px; }
+.work h3{ font-size:1.12rem; font-weight:700; }
+.work .role-line{ font-size:.82rem; color:var(--accent); font-weight:700; margin:4px 0 8px; }
+.work p{ font-size:.92rem; color:var(--ink-2); }
+
+/* ============================================================
+   プロフィール
+   ============================================================ */
+.about{ background:var(--bg-soft); }
+.about-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:56px; }
+.about-photo .frame{ border-radius:var(--radius); overflow:hidden; aspect-ratio:1/1; background:var(--white); box-shadow:0 18px 40px rgba(29,27,24,.12); }
+.ph{ width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+     background:repeating-linear-gradient(45deg,var(--bg-soft),var(--bg-soft) 14px,#eee7da 14px,#eee7da 28px); color:var(--ink-2); }
+.ph svg{ width:34px; height:34px; opacity:.5; }
+.ph span{ font-size:.8rem; letter-spacing:.06em; }
+.about-text h3{ font-size:1.5rem; font-weight:900; margin-bottom:16px; }
+.about-text p{ color:var(--ink-2); margin-bottom:16px; }
+.about-text p strong{ color:var(--ink); }
+.skill-block{ margin-top:26px; }
+.skill-block h4{ font-size:.82rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-2); margin-bottom:12px; font-family:"Inter",sans-serif; }
+.tags{ display:flex; flex-wrap:wrap; gap:9px; }
+.tags span{ background:var(--white); border:1px solid var(--line); padding:7px 15px; border-radius:8px; font-size:.88rem; font-weight:500; }
+
+/* ============================================================
+   お問い合わせ
+   ============================================================ */
+.contact{ text-align:center; }
+.contact h2{ font-size:clamp(1.8rem,4vw,2.6rem); font-weight:900; }
+.contact p{ color:var(--ink-2); max-width:520px; margin:16px auto 38px; }
+.contact-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+.cbtn{ display:inline-flex; align-items:center; gap:10px; background:var(--white); border:1px solid var(--line); padding:14px 24px; border-radius:12px; font-weight:700; font-size:.96rem; transition:.2s; }
+.cbtn:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-3px); }
+.cbtn svg{ width:18px; height:18px; }
+.cbtn.primary{ background:var(--ink); color:var(--white); border-color:var(--ink); }
+.cbtn.primary:hover{ background:var(--accent); border-color:var(--accent); color:var(--white); }
+
+footer{ border-top:1px solid var(--line); padding:30px 0; }
+footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; color:var(--ink-2); font-size:.85rem; }
+
+/* ============================================================
+   ライトボックス（作品クリックで開く拡大ポップアップ）
+   ============================================================ */
+.lb{ position:fixed; inset:0; z-index:100; background:rgba(18,16,14,.92); display:none; align-items:center; justify-content:center; padding:24px; }
+.lb.open{ display:flex; }
+.lb-stage{ position:relative; max-width:92vw; max-height:88vh; display:flex; align-items:center; justify-content:center; }
+.lb-img{ max-width:90vw; max-height:80vh; object-fit:contain; border-radius:8px; background:#fff; box-shadow:0 24px 70px rgba(0,0,0,.55); }
+.lb-btn{ position:absolute; border:0; background:rgba(255,255,255,.92); color:var(--ink); width:48px; height:48px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; box-shadow:0 4px 16px rgba(0,0,0,.3); }
+.lb-btn:hover{ background:#fff; transform:scale(1.06); }
+.lb-btn svg{ width:24px; height:24px; }
+.lb-close{ top:-16px; right:-16px; width:42px; height:42px; }
+.lb-prev{ left:18px; top:50%; transform:translateY(-50%); }
+.lb-next{ right:18px; top:50%; transform:translateY(-50%); }
+.lb-prev:hover,.lb-next:hover{ transform:translateY(-50%) scale(1.06); }
+.lb-foot{ position:fixed; left:0; right:0; bottom:26px; text-align:center; color:#fff; display:flex; flex-direction:column; gap:4px; }
+.lb-cap{ font-weight:700; font-size:1rem; }
+.lb-counter{ font-family:"Inter",sans-serif; font-size:.86rem; opacity:.75; letter-spacing:.05em; }
+@media(max-width:880px){
+  .lb-close{ top:-14px; right:0; }
+  .lb-prev{ left:4px; } .lb-next{ right:4px; }
+  .lb-btn{ width:42px; height:42px; }
+}
+
+/* ============================================================
+   レスポンシブ
+   ============================================================ */
+@media(max-width:880px){
+  .case-grid,.about-grid{ grid-template-columns:1fr; gap:40px; }
+  /* スマホ：文字が画像全面に重なるので、スクリムを全体に効かせて視認性を確保 */
+  .hero{ min-height:520px; }
+  .hero-scrim{ background:
+    linear-gradient(180deg, rgba(250,248,244,.72) 0%, rgba(250,248,244,.8) 60%, rgba(250,248,244,.92) 100%); }
+  .hero-copy{ padding:56px 0; max-width:none; }
+  .hero .lead{ max-width:none; }
+  .hero-tag{ display:none; }
+  .stats .wrap{ grid-template-columns:1fr 1fr; }
+  .stat:nth-child(3){ border-left:none; }
+  .nav-links a:not(.nav-cta){ display:none; }
+  section{ padding:76px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== ナビ ===================== -->
+<header>
+  <nav class="nav">
+    <a href="#top" class="brand">YUKA<small>EXPLANATORY MANGA ・ ILLUSTRATION</small></a>
+    <div class="nav-links">
+      <a href="#works">作品</a>
+      <a href="#about">プロフィール</a>
+      <a href="#contact" class="nav-cta">お仕事のご相談</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ===================== ヒーロー（背景に拡大画像のスライドショー） ===================== -->
+<section id="top" class="hero">
+  <!-- ▼ 背景スライドショー：<img> を増減できます。data-label は右下に出る作品名 -->
+  <div class="hero-bg" id="heroBg">
+    <img class="is-active" src="images/slide00.jpg" alt="" data-label="大型看板・壁画">
+    <img src="images/slide01.jpg" alt="" data-label="誌面連載｜マダイ料理">
+    <img src="images/slide02.jpg" alt="" data-label="誌面連載｜サバ料理">
+    <img src="images/slide03.jpg" alt="" data-label="図鑑マンガ｜危険生物">
+    <img src="images/slide04.jpg" alt="" data-label="大型看板（全景）">
+  </div>
+  <div class="hero-scrim"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <!-- ▼ 職種を変えるときはこの2行を書き換え -->
+      <div class="role en">Explanatory Manga &amp; Illustration</div>
+      <h1>むずかしいことを、<br><span class="mark">マンガでわかりやすく。</span></h1>
+      <p class="lead">専門的で複雑な情報を、マンガ・図解・キャラクターで「直感的に伝わる」形にします。
+        雑誌の長期連載から大型看板まで、媒体・ジャンルを問わず制作してきました。</p>
+      <div class="hero-cta">
+        <a href="#works" class="btn btn-solid">作品を見る</a>
+        <a href="#contact" class="btn btn-line">お仕事のご相談</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-tag" id="heroTag">大型看板・壁画</div><!-- ← 先頭スライドの作品名 -->
+</section>
+
+<!-- ===================== 指標バー ===================== -->
+<!-- ▼ 実績の数字。実数に書き換えてください -->
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><b class="en">180<span style="font-size:1rem">回+</span></b><small>雑誌連載の制作実績</small></div>
+    <div class="stat"><b class="en">10<span style="font-size:1rem">年+</span></b><small>制作歴</small></div>
+    <div class="stat"><b class="en">100<span style="font-size:1rem">%</span></b><small>企画〜誌面まで対応</small></div>
+  </div>
+</div>
+
+<!-- ===================== 代表作（ケーススタディ） ===================== -->
+<section class="case">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Featured Work</div>
+      <h2>代表作のご紹介</h2>
+    </div>
+    <div class="case-grid">
+      <div class="case-art">
+        <div class="frame">
+          <img src="images/main01.jpg" alt="雑誌連載の誌面制作（企画・イラスト・図解・レイアウト）">
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Case Study</div>
+        <h3>雑誌連載「釣魚料理シリーズ」</h3>
+        <div class="meta">タイトルロゴ・イラスト・図解・レイアウトまで一貫制作</div>
+        <p>文章だけでは伝わりにくい手順を、リアルなイラストと工程図解、タイトルデザインまで含めて
+          1ページにまとめています。読者が見ただけで作業を再現できる「伝わる誌面」を目指し、
+          長期連載として制作を続けています。</p>
+        <dl>
+          <dt>担当</dt><dd>企画構成・イラスト・図解・誌面レイアウト</dd>
+          <dt>形態</dt><dd>雑誌連載（号数 No.373〜388 ほか）</dd>
+          <dt>強み</dt><dd>1人で「描く」と「まとめる」を完結できること</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 作品ギャラリー ===================== -->
+<section id="works">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Works</div>
+      <h2>作品一覧</h2>
+      <p>「マンガで伝える」「図解でわかりやすくする」「キャラで親しみを生む」「大きく目を引く」——
+        目的に合わせて表現を使い分けています。ボタンでジャンルをしぼり込めます。</p>
+    </div>
+
+    <div class="filter">
+      <button class="active" data-filter="all">すべて</button>
+      <button data-filter="manga">解説マンガ・キャラ</button>
+      <button data-filter="zukai">図解・誌面</button>
+      <button data-filter="kanban">看板・大型</button>
+      <button data-filter="real">リアルイラスト</button>
+    </div>
+
+    <!-- ▼▼ 作品カード ▼▼
+         1枚のカードに複数 <img> を入れると、自動スライドショー＋クリックで複数枚めくれるポップアップになります。
+         画像を増やすには <img> 行を足すだけ（先頭画像に class="is-active" を付ける）。 -->
+    <div class="grid" id="grid">
+
+      <!-- 解説マンガ・キャラクター（一番の売り）：2枚 -->
+      <article class="work" data-cat="manga">
+        <button class="thumb" type="button">
+          <span class="cat">解説マンガ</span><span class="count">1/2</span>
+          <img class="is-active" src="images/manga01.jpg" alt="イカ釣りの解説マンガ">
+          <img src="images/chara01.jpg" alt="危険生物の図鑑マンガ">
+          <span class="dots"><i class="on"></i><i></i></span>
+          <span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <div class="body">
+          <h3>解説マンガ・図鑑マンガ</h3>
+          <div class="role-line">解説マンガ / キャラクター</div>
+          <p>釣り方のコツや生きものの知識を、キャラクターとマンガで楽しく解説。</p>
+        </div>
+      </article>
+
+      <!-- 釣魚料理シリーズ 誌面：4枚（1/4の例） -->
+      <article class="work" data-cat="zukai">
+        <button class="thumb" type="button">
+          <span class="cat">図解・誌面</span><span class="count">1/4</span>
+          <img class="is-active" src="images/main01.jpg" alt="マダイ料理特集の誌面">
+          <img src="images/kasago01.jpg" alt="カサゴ料理特集の誌面">
+          <img src="images/suzuki01.jpg" alt="スズキ料理特集の誌面">
+          <img src="images/saba01.jpg" alt="サバ料理特集の誌面">
+          <span class="dots"><i class="on"></i><i></i><i></i><i></i></span>
+          <span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <div class="body">
+          <h3>釣魚料理シリーズ（誌面連載）</h3>
+          <div class="role-line">誌面デザイン / 図解</div>
+          <p>タイトル・イラスト・図解・レイアウトまで一貫制作した雑誌連載の誌面。</p>
+        </div>
+      </article>
+
+      <!-- 大型看板・壁画：3枚 -->
+      <article class="work" data-cat="kanban">
+        <button class="thumb" type="button">
+          <span class="cat">看板・大型</span><span class="count">1/3</span>
+          <img class="is-active" src="images/kanban02.jpg" alt="大型看板・壁画の全景">
+          <img src="images/kanban01.jpg" alt="看板イラストのクローズアップ">
+          <img src="images/kanban03.jpg" alt="設置された大型看板">
+          <span class="dots"><i class="on"></i><i></i><i></i></span>
+          <span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <div class="body">
+          <h3>大型看板・壁画</h3>
+          <div class="role-line">屋外大型グラフィック</div>
+          <p>企業施設向けに制作した大型看板。遠くからでも目を引く迫力ある一枚。</p>
+        </div>
+      </article>
+
+      <!-- 釣り・調理の図解：7枚 -->
+      <article class="work" data-cat="zukai">
+        <button class="thumb" type="button">
+          <span class="cat">図解</span><span class="count">1/7</span>
+          <img class="is-active" src="images/manga05.jpg" alt="餌づくりの工程図解">
+          <img src="images/manga02.jpg" alt="仕掛けの作り方の図解">
+          <img src="images/manga04.jpg" alt="道具の作り方の図解">
+          <img src="images/manga07.jpg" alt="使い方・シーンの図解">
+          <img src="images/manga03.jpg" alt="タックル・釣り方の図解">
+          <img src="images/03.jpg" alt="仕掛け・ルアーの図解">
+          <img src="images/04.jpg" alt="エギングの解説図">
+          <span class="dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <div class="body">
+          <h3>釣り・調理のテクニカル図解</h3>
+          <div class="role-line">テクニカル図解</div>
+          <p>複雑な手順や道具の構造を、段階を追って一目でわかるように図解。</p>
+        </div>
+      </article>
+
+      <!-- 3枚おろしの図解：2枚 -->
+      <article class="work" data-cat="zukai">
+        <button class="thumb" type="button">
+          <span class="cat">解説イラスト</span><span class="count">1/2</span>
+          <img class="is-active" src="images/aji02.jpg" alt="アジの3枚おろし図解">
+          <img src="images/kyuusen02.jpg" alt="キュウセンの3枚おろし図解">
+          <span class="dots"><i class="on"></i><i></i></span>
+          <span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <div class="body">
+          <h3>3枚おろしの手順図解</h3>
+          <div class="role-line">調理解説イラスト</div>
+          <p>包丁の角度や手の添え方まで、捌き方の手順を一目で理解できる図解。</p>
+        </div>
+      </article>
+
+      <!-- リアルイラスト（引き出しのひとつ）：2枚 -->
+      <article class="work" data-cat="real">
+        <button class="thumb" type="button">
+          <span class="cat">リアルイラスト</span><span class="count">1/2</span>
+          <img class="is-active" src="images/aji01.jpg" alt="マアジのリアルイラスト">
+          <img src="images/kyuusen01.jpg" alt="キュウセンのリアルイラスト">
+          <span class="dots"><i class="on"></i><i></i></span>
+          <span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <div class="body">
+          <h3>魚のリアルイラスト</h3>
+          <div class="role-line">リアルイラスト</div>
+          <p>質感や鮮やかな体色まで描き込んだ、図鑑・媒体向けのリアルイラスト。</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== プロフィール ===================== -->
+<section id="about" class="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">About</div>
+      <h2>プロフィール</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-photo">
+        <div class="frame">
+          <!-- ▼ プロフィール画像（キュウセンのリアルイラスト）。顔写真に変えたい場合は src を差し替え -->
+          <img src="images/kyuusen01.jpg" alt="キュウセンのリアルイラスト">
+        </div>
+      </div>
+      <div class="about-text">
+        <h3>YUKA</h3>
+        <p><strong>「むずかしいことを、わかりやすく」を専門にするイラストレーター。</strong>
+          解説マンガ、図解、キャラクター、大型看板まで、表現の引き出しの広さが強みです。</p>
+        <p>得意なのは<strong>情報を整理して"伝わる絵"にする力</strong>。
+          専門的で複雑な内容も、読み手が直感的に理解できるマンガや図解に翻訳します。
+          1人で<strong>「描く」から「誌面にまとめる」まで完結</strong>できます。</p>
+        <p>雑誌では手順解説の<strong>長期連載</strong>を担当。テーマに合わせて、
+          リアルな描写からゆるいキャラクターまで、絵柄を自在に使い分けます。</p>
+
+        <div class="skill-block">
+          <h4>制作できるもの</h4>
+          <div class="tags">
+            <span>解説マンガ</span><span>図解・インフォグラフィック</span><span>キャラクターデザイン</span>
+            <span>看板・大型グラフィック</span><span>誌面デザイン・レイアウト</span><span>リアルイラスト</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <h4>使用ソフト・画材</h4>
+          <div class="tags">
+            <span>Photoshop</span><span>Illustrator</span><span>CLIP STUDIO PAINT</span>
+            <span>iPad / Procreate</span><span>アナログ作画</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== お問い合わせ ===================== -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center">Contact</div>
+    <h2>お仕事のご相談</h2>
+    <p>解説マンガ・図解・キャラクター・看板など、イラスト制作のご依頼はお気軽にどうぞ。<br>2営業日以内にご返信します。</p>
+    <div class="contact-row">
+      <!-- ▼ メールアドレスを書き換え -->
+      <a class="cbtn primary" href="mailto:sayu003@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        メールで相談する
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="brand">YUKA</span>
+    <span>© 2026 YUKA — Explanatory Manga &amp; Illustration Portfolio</span>
+  </div>
+</footer>
+
+<!-- ===================== ライトボックス（ポップアップ） ===================== -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="作品の拡大表示">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="閉じる">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="前の画像">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <div class="lb-stage"><img class="lb-img" id="lbImg" src="" alt=""></div>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="次の画像">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <div class="lb-foot"><span class="lb-cap" id="lbCap"></span><span class="lb-counter" id="lbCounter"></span></div>
+</div>
+
+<script>
+/* ===== ヒーロー背景スライドショー ===== */
+(function(){
+  const imgs=Array.from(document.querySelectorAll('#heroBg img'));
+  const tag=document.getElementById('heroTag');
+  if(imgs.length<2) return;
+  let i=0;
+  setInterval(()=>{
+    imgs[i].classList.remove('is-active');
+    i=(i+1)%imgs.length;
+    imgs[i].classList.add('is-active');
+    if(tag) tag.textContent=imgs[i].dataset.label||'';
+  }, 4500);
+})();
+
+/* ===== 作品フィルター ===== */
+const btns  = document.querySelectorAll('.filter button');
+const works = document.querySelectorAll('#grid .work');
+btns.forEach(b=>b.addEventListener('click',()=>{
+  btns.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const f=b.dataset.filter;
+  works.forEach(w=>{ w.style.display=(f==='all'||w.dataset.cat===f)?'':'none'; });
+}));
+
+/* ===== サムネの自動スライドショー ＋ クリックでライトボックス ===== */
+const lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'),
+      lbCap=document.getElementById('lbCap'), lbCounter=document.getElementById('lbCounter'),
+      lbPrev=document.getElementById('lbPrev'), lbNext=document.getElementById('lbNext'),
+      lbCloseBtn=document.getElementById('lbClose');
+let lbList=[], lbIdx=0;
+
+function lbRender(){
+  lbImg.src=lbList[lbIdx];
+  lbCounter.textContent=(lbIdx+1)+' / '+lbList.length;
+  const multi=lbList.length>1;
+  lbPrev.style.display=lbNext.style.display=multi?'flex':'none';
+}
+function lbOpen(list,idx,title){ lbList=list; lbIdx=idx; lbCap.textContent=title||''; lbRender(); lb.classList.add('open'); document.body.style.overflow='hidden'; }
+function lbClose(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+function lbMove(d){ lbIdx=(lbIdx+d+lbList.length)%lbList.length; lbRender(); }
+
+document.querySelectorAll('#grid .work').forEach((work,wi)=>{
+  const thumb=work.querySelector('.thumb');
+  const imgs=Array.from(thumb.querySelectorAll('img'));
+  const counter=thumb.querySelector('.count');
+  const dots=Array.from(thumb.querySelectorAll('.dots i'));
+  const title=(work.querySelector('h3')||{}).textContent||'';
+  let idx=0, timer=null;
+
+  const render=()=>{
+    imgs.forEach((im,k)=>im.classList.toggle('is-active',k===idx));
+    dots.forEach((d,k)=>d.classList.toggle('on',k===idx));
+    if(counter) counter.textContent=(idx+1)+'/'+imgs.length;
+    thumb.dataset.idx=idx;
+  };
+  const next=()=>{ idx=(idx+1)%imgs.length; render(); };
+  render();
+
+  if(imgs.length>1){
+    const start=()=>{ if(!timer) timer=setInterval(next,2800); };
+    const stop =()=>{ clearInterval(timer); timer=null; };
+    setTimeout(start, 700+wi*450);            // カードごとに少しずらして開始
+    thumb.addEventListener('mouseenter',stop);
+    thumb.addEventListener('mouseleave',start);
+  }
+  // クリックで、いま表示中の画像からポップアップを開く
+  const list=imgs.map(im=>im.getAttribute('src'));
+  thumb.addEventListener('click',()=>lbOpen(list, parseInt(thumb.dataset.idx||'0',10), title));
+});
+
+/* ===== ライトボックス操作 ===== */
+lbCloseBtn.addEventListener('click',lbClose);
+lbPrev.addEventListener('click',e=>{ e.stopPropagation(); lbMove(-1); });
+lbNext.addEventListener('click',e=>{ e.stopPropagation(); lbMove(1); });
+lb.addEventListener('click',e=>{ if(e.target===lb||e.target.classList.contains('lb-stage')) lbClose(); });
+document.addEventListener('keydown',e=>{
+  if(!lb.classList.contains('open')) return;
+  if(e.key==='Escape') lbClose();
+  else if(e.key==='ArrowLeft') lbMove(-1);
+  else if(e.key==='ArrowRight') lbMove(1);
+});
+</script>
+</body>
+</html>
